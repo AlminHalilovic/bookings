@@ -33,6 +33,11 @@ public class Response<T> {
         return response;
     }
 
+    public static <T> Response<T> created() {
+        Response<T> response = new Response<>();
+        response.setStatus(Status.CREATED);
+        return response;
+    }
 
 
     public static <T> Response<T> exception() {
@@ -40,6 +45,7 @@ public class Response<T> {
         response.setStatus(Status.EXCEPTION);
         return response;
     }
+
     public static <T> Response<T> notFound() {
         Response<T> response = new Response<>();
         response.setStatus(Status.NOT_FOUND);
@@ -67,7 +73,7 @@ public class Response<T> {
     }
 
     public enum Status {
-        OK, BAD_REQUEST, EXCEPTION, NOT_FOUND, DUPLICATE_ENTITY, FORBIDDEN
+        OK, BAD_REQUEST, EXCEPTION, NOT_FOUND, DUPLICATE_ENTITY, FORBIDDEN, CREATED
     }
 
     @Getter
