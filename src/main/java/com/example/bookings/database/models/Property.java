@@ -1,4 +1,4 @@
-package com.example.bookings.database.model;
+package com.example.bookings.database.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,4 +22,8 @@ public class Property {
 
     @Column(name = "LOCATION")
     private String location;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
 }

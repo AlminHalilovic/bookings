@@ -1,1 +1,27 @@
+spring:
+  jpa:
+    # Provide database platform that is being used
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      # New database is created when app starts and destroyed when app stops
+      ddl-auto: create-drop
+    # Show sql when spring data jpa performs query
+    show-sql: true
+    properties:
+      hibernate:
+        # Format queries
+        format_sql: true
+  datasource:
+    # URL connection to database (spring-security is database name)
+    url: jdbc:h2:mem:bookings
+    # H2 SQL driver dependency
+    driver-class-name: org.h2.Driver
+    username: root
+    password: 12345
+  flyway:
+    baseline_on_migrate: true
+    enabled: true
 
+token:
+  signing:
+    key: 8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb

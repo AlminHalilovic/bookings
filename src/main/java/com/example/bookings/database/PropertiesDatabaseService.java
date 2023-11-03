@@ -1,7 +1,9 @@
 package com.example.bookings.database;
 
 import com.example.bookings.database.mappers.PropertyMapper;
+import com.example.bookings.database.models.User;
 import com.example.bookings.database.repositories.PropertyRepository;
+import com.example.bookings.database.repositories.UserRepository;
 import com.example.bookings.domain.Property;
 import com.example.bookings.domain.request.CreatePropertyRequest;
 import com.example.bookings.domain.request.UpdatePropertyRequest;
@@ -12,17 +14,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.bookings.exceptions.EntityType.PROPERTY;
+import static com.example.bookings.exceptions.EntityType.USER;
 import static com.example.bookings.exceptions.ExceptionType.ENTITY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class PropertiesDatabaseService {
-
     private final PropertyRepository propertyRepository;
     private final PropertyMapper propertyMapper;
+    private final UserRepository userRepository;
 
-    public List<Property> getProperties() {
-        return propertyRepository.findAll().stream().map(propertyMapper::toDomain).toList();
+    public List<Property> getPropertiesByUserEmail(String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(
+                () -> ApplicationException.buildException(USER, ENTITY_NOT_FOUND, userEmail)
+        );
+        return propertyRepository.findByUserId(user.getId()).stream().map(propertyMapper::toDomain).toList();
     }
 
     public Property getProperty(String id) {
@@ -33,15 +39,19 @@ public class PropertiesDatabaseService {
             throw ApplicationException.buildException(PROPERTY, ENTITY_NOT_FOUND, id);
         }
 
-        com.example.bookings.database.model.Property property = propertyRepository.findById(idLong).orElseThrow(
+        com.example.bookings.database.models.Property property = propertyRepository.findById(idLong).orElseThrow(
                 () -> ApplicationException.buildException(PROPERTY, ENTITY_NOT_FOUND, id)
         );
 
         return propertyMapper.toDomain(property);
     }
 
-    public Property createProperty(CreatePropertyRequest createPropertyRequest) {
-        com.example.bookings.database.model.Property property = propertyMapper.toDb(createPropertyRequest);
+    public Property createProperty(CreatePropertyRequest createPropertyRequest, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(
+                () -> ApplicationException.buildException(USER, ENTITY_NOT_FOUND, userEmail)
+        );
+
+        com.example.bookings.database.models.Property property = propertyMapper.toDb(createPropertyRequest, user);
         property = propertyRepository.save(property);
         return propertyMapper.toDomain(property);
     }
@@ -54,7 +64,7 @@ public class PropertiesDatabaseService {
             throw ApplicationException.buildException(PROPERTY, ENTITY_NOT_FOUND, id);
         }
 
-        com.example.bookings.database.model.Property property = propertyRepository.findById(idLong).orElseThrow(
+        com.example.bookings.database.models.Property property = propertyRepository.findById(idLong).orElseThrow(
                 () -> ApplicationException.buildException(PROPERTY, ENTITY_NOT_FOUND, id)
         );
 

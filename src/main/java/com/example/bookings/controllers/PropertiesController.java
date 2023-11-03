@@ -11,10 +11,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/properties")
@@ -24,23 +27,24 @@ public class PropertiesController {
     private final PropertiesService propertiesService;
 
     @GetMapping
-    @Operation(summary = "Get Properties", tags = {"properties"})
+    @Operation(summary = "Get Properties", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Property.class))
                     )})})
-    public Response getProperties() {
+    public Response getProperties(Principal principal) {
         return Response.ok()
-                .setPayload(propertiesService.getProperties());
+                .setPayload(propertiesService.getProperties(principal.getName()));
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get Property", tags = {"properties"})
+    @Operation(summary = "Get Property", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = Property.class))})})
-    public Response getProperty(@PathVariable("id") String id) {
+    public Response getProperty(
+            @PathVariable("id") String id) {
         return Response
                 .ok()
                 .setPayload(propertiesService.getProperty(id));
@@ -49,21 +53,21 @@ public class PropertiesController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create Property", tags = {"properties"})
+    @Operation(summary = "Create Property", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Property.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
-    public Response createProperty(@RequestBody @Valid CreatePropertyRequest request) {
+    public Response createProperty(@RequestBody @Valid CreatePropertyRequest request, Principal principal) {
         return Response
                 .created()
-                .setPayload(propertiesService.createProperty(request));
+                .setPayload(propertiesService.createProperty(request, principal.getName()));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update Property", tags = {"properties"})
+    @Operation(summary = "Update Property", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
