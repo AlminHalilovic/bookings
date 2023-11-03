@@ -15,18 +15,21 @@ public class PropertyMapper {
     }
 
     public com.example.bookings.database.models.Property toDb(CreatePropertyRequest request, User user) {
-        return new com.example.bookings.database.models.Property()
-                .setName(request.name())
-                .setLocation(request.location())
-                .setUser(user);
+        return com.example.bookings.database.models.Property.builder()
+                .name(request.name())
+                .location(request.location())
+                .user(user)
+                .build();
     }
 
     public com.example.bookings.database.models.Property toDb(UpdatePropertyRequest request,
                                                               com.example.bookings.database.models.Property dbProperty) {
-        dbProperty.setName(request.name());
-        dbProperty.setLocation(request.location());
-
-        return dbProperty;
+        return com.example.bookings.database.models.Property.builder()
+                .id(dbProperty.getId())
+                .name(request.name())
+                .location(request.location())
+                .user(dbProperty.getUser())
+                .build();
     }
 
 
