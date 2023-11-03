@@ -1,10 +1,10 @@
-package com.example.bookings.database.model;
+package com.example.bookings.database.models;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "bookings")
-public class Booking {
+@Table(name = "blocks")
+public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -15,22 +15,20 @@ public class PropertiesService {
 
     private final PropertiesDatabaseService propertiesDatabaseService;
 
-    public List<Property> getProperties() {
-        return propertiesDatabaseService.getProperties();
+    public List<Property> getProperties(String userEmail) {
+        return propertiesDatabaseService.getPropertiesByUserEmail(userEmail);
     }
 
     public Property getProperty(String id) {
-        // todo do validations
-        return propertiesDatabaseService.getProperty(id);
+        Property property = propertiesDatabaseService.getProperty(id);
+        return property;
     }
 
-    public Property createProperty(CreatePropertyRequest createPropertyRequest) {
-        // todo do validations
-        return propertiesDatabaseService.createProperty(createPropertyRequest);
+    public Property createProperty(CreatePropertyRequest createPropertyRequest, String userEmail) {
+        return propertiesDatabaseService.createProperty(createPropertyRequest, userEmail);
     }
 
     public Property updateProperty(String id, UpdatePropertyRequest updatePropertyRequest) {
-        // todo do validations
         return propertiesDatabaseService.updateProperty(id, updatePropertyRequest);
     }
 }
