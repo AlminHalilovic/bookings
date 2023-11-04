@@ -19,7 +19,6 @@ public class UserDatabaseService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
 
-
     public User getUserByEmail(String email) {
         com.example.bookings.database.models.User dbUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> ApplicationException.buildException(USER, ENTITY_NOT_FOUND, email));

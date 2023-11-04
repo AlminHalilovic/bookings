@@ -9,5 +9,4 @@ class BookingsApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

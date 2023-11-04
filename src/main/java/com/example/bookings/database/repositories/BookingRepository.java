@@ -10,5 +10,8 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends CrudRepository<Booking, Long> {
     List<Booking> findByPropertyId(Long propertyId);
+
     List<Booking> findByStartDateBetweenOrEndDateBetween(LocalDate start, LocalDate end, LocalDate start2, LocalDate end2);
+
+    boolean existsByStartDateBetweenOrEndDateBetween(LocalDate start, LocalDate end, LocalDate start2, LocalDate end2);
 }

@@ -22,7 +22,7 @@ public class PropertiesService {
     private final BlocksDatabaseService blocksDatabaseService;
     private final BookingsDatabaseService bookingsDatabaseService;
 
-    public List<Property> getProperties(String userEmail) {
+    public List<Property> getAllUserProperties(String userEmail) {
         return propertiesDatabaseService.getPropertiesByUserEmail(userEmail);
     }
 
@@ -36,6 +36,10 @@ public class PropertiesService {
 
     public Property updateProperty(String id, UpdatePropertyRequest updatePropertyRequest) {
         return propertiesDatabaseService.updateProperty(id, updatePropertyRequest);
+    }
+
+    public void deleteProperty(String id) {
+        propertiesDatabaseService.deleteProperty(id);
     }
 
     public PropertyAvailability getPropertyAvailability(String id) {

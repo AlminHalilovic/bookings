@@ -23,7 +23,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         User user = userDatabaseService.getUserByEmail(username);
 
         return org.springframework.security.core.userdetails.User
@@ -42,6 +41,4 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         return authorities;
     }
-
-
 }

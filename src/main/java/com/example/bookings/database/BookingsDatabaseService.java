@@ -8,6 +8,7 @@ import com.example.bookings.domain.Booking;
 import com.example.bookings.domain.request.CreateBookingRequest;
 import com.example.bookings.domain.request.UpdateBookingRequest;
 import com.example.bookings.exceptions.ApplicationException;
+import com.example.bookings.exceptions.EntityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +28,7 @@ public class BookingsDatabaseService {
     private final PropertyRepository propertyRepository;
 
     public Booking getBooking(String id) {
-        long idLong;
-        try {
-            idLong = Long.parseLong(id);
-        } catch (Exception e) {
-            throw ApplicationException.buildException(BOOKING, ENTITY_NOT_FOUND, id);
-        }
-
+        long idLong = parseId(id, BOOKING);
         com.example.bookings.database.models.Booking Booking = bookingRepository.findById(idLong).orElseThrow(
                 () -> ApplicationException.buildException(BOOKING, ENTITY_NOT_FOUND, id)
         );
@@ -42,12 +37,7 @@ public class BookingsDatabaseService {
     }
 
     public List<Booking> getBookingsByPropertyId(String propertyId) {
-        long idLong;
-        try {
-            idLong = Long.parseLong(propertyId);
-        } catch (Exception e) {
-            throw ApplicationException.buildException(PROPERTY, ENTITY_NOT_FOUND, propertyId);
-        }
+        long idLong = parseId(propertyId, PROPERTY);
         return bookingRepository.findByPropertyId(idLong).stream().map(bookingMapper::toDomain).toList();
     }
 
@@ -62,13 +52,7 @@ public class BookingsDatabaseService {
     }
 
     public Booking updateBooking(String id, UpdateBookingRequest request) {
-        long idLong;
-        try {
-            idLong = Long.parseLong(id);
-        } catch (Exception e) {
-            throw ApplicationException.buildException(BOOKING, ENTITY_NOT_FOUND, id);
-        }
-
+        long idLong = parseId(id, BOOKING);
         com.example.bookings.database.models.Booking booking = bookingRepository.findById(idLong).orElseThrow(
                 () -> ApplicationException.buildException(BOOKING, ENTITY_NOT_FOUND, id)
         );
@@ -83,5 +67,25 @@ public class BookingsDatabaseService {
     public List<Booking> getBookingsBetweenDates(LocalDate startDate, LocalDate endDate) {
         return bookingRepository.findByStartDateBetweenOrEndDateBetween(startDate, endDate, startDate, endDate)
                 .stream().map(bookingMapper::toDomain).toList();
+    }
+
+    public void deleteBooking(String id) {
+        long idLong = parseId(id, BOOKING);
+        bookingRepository.deleteById(idLong);
+    }
+
+    public boolean bookingsExistBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return bookingRepository.existsByStartDateBetweenOrEndDateBetween(startDate, endDate, startDate, endDate);
+    }
+
+
+    private long parseId(String id, EntityType entityType) {
+        long idLong;
+        try {
+            idLong = Long.parseLong(id);
+        } catch (Exception e) {
+            throw ApplicationException.buildException(entityType, ENTITY_NOT_FOUND, id);
+        }
+        return idLong;
     }
 }

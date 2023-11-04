@@ -25,15 +25,16 @@ import java.security.Principal;
 public class BlocksController {
     private final BlocksService blocksService;
 
-    @GetMapping
+    @GetMapping("/property/{propertyId}")
     @Operation(summary = "Get Blocks by propertyId", tags = {"blocks"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Block.class))
                     )})})
-    public Response getBlocksByPropertyId(@PathVariable("propertyId") String propertyId, Principal principal) {
-        return Response.ok()
+    public Response getBlocksByPropertyId(@PathVariable("propertyId") String propertyId) {
+        return Response
+                .ok()
                 .setPayload(blocksService.getBlocksByPropertyId(propertyId));
     }
 
@@ -48,7 +49,6 @@ public class BlocksController {
                 .ok()
                 .setPayload(blocksService.getBlock(id));
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -79,5 +79,17 @@ public class BlocksController {
         return Response
                 .ok()
                 .setPayload(blocksService.updateBlock(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete Block", tags = {"blocks"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful operation")
+    })
+    public Response deleteBlock(
+            @PathVariable("id") String id) {
+        blocksService.deleteBlock(id);
+        return Response.noContent();
     }
 }

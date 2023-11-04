@@ -28,15 +28,16 @@ public class PropertiesController {
     private final PropertiesService propertiesService;
 
     @GetMapping
-    @Operation(summary = "Get Properties", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get All User Properties", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Property.class))
                     )})})
-    public Response getProperties(Principal principal) {
-        return Response.ok()
-                .setPayload(propertiesService.getProperties(principal.getName()));
+    public Response getAllUserProperties(Principal principal) {
+        return Response
+                .ok()
+                .setPayload(propertiesService.getAllUserProperties(principal.getName()));
     }
 
     @GetMapping("/{id}")
@@ -50,7 +51,6 @@ public class PropertiesController {
                 .ok()
                 .setPayload(propertiesService.getProperty(id));
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -93,5 +93,17 @@ public class PropertiesController {
         return Response
                 .ok()
                 .setPayload(propertiesService.getPropertyAvailability(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete Property", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful operation")
+    })
+    public Response deleteProperty(
+            @PathVariable("id") String id) {
+        propertiesService.deleteProperty(id);
+        return Response.noContent();
     }
 }

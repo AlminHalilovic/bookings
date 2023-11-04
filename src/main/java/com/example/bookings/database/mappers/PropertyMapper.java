@@ -10,8 +10,12 @@ import org.springframework.stereotype.Component;
 public class PropertyMapper {
 
     public Property toDomain(com.example.bookings.database.models.Property dbProperty) {
-        return new Property(dbProperty.getId().toString(), dbProperty.getUser().getId().toString(),
-                dbProperty.getName(), dbProperty.getLocation());
+        return new Property(
+                dbProperty.getId().toString(),
+                dbProperty.getUser().getId().toString(),
+                dbProperty.getName(),
+                dbProperty.getLocation()
+        );
     }
 
     public com.example.bookings.database.models.Property toDb(CreatePropertyRequest request, User user) {
@@ -31,6 +35,4 @@ public class PropertyMapper {
                 .user(dbProperty.getUser())
                 .build();
     }
-
-
 }

@@ -3,17 +3,15 @@ package com.example.bookings.database.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "properties")
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Accessors(chain = true)
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -19,7 +19,10 @@ import java.util.function.Function;
 public class JwtService {
 
     @Value("${token.signing.key}")
-    public String jwtSigningKey;
+    private String jwtSigningKey;
+
+    @Value("${token.expirationInMillis}")
+    private long tokenExpirationInMillis;
 
     public String generateToken(UserDetails userDetails) {
         return createToken(new HashMap<>(), userDetails);
@@ -30,7 +33,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationInMillis))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -69,6 +72,4 @@ public class JwtService {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
-
 }
