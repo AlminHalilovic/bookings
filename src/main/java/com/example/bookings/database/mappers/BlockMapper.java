@@ -10,23 +10,33 @@ import org.springframework.stereotype.Component;
 public class BlockMapper {
 
     public Block toDomain(com.example.bookings.database.models.Block dbBlock) {
-        return new Block(dbBlock.getId().toString(), dbBlock.getUser().getId().toString(),
-                dbBlock.getProperty().getId().toString(), dbBlock.getStartDate(), dbBlock.getEndDate());
+        return new Block(
+                dbBlock.getId().toString(),
+                dbBlock.getUser().getId().toString(),
+                dbBlock.getProperty().getId().toString(),
+                dbBlock.getStartDate(),
+                dbBlock.getEndDate()
+        );
     }
 
     public com.example.bookings.database.models.Block toDb(CreateBlockRequest request, Property property) {
-        return new com.example.bookings.database.models.Block()
-                .setStartDate(request.startDate())
-                .setEndDate(request.endDate())
-                .setUser(property.getUser())
-                .setProperty(property);
+
+        return com.example.bookings.database.models.Block.builder()
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .property(property)
+                .user(property.getUser())
+                .build();
     }
 
     public com.example.bookings.database.models.Block toDb(UpdateBlockRequest request,
                                                            com.example.bookings.database.models.Block dbBlock) {
-        dbBlock.setStartDate(request.startDate());
-        dbBlock.setEndDate(request.endDate());
-
-        return dbBlock;
+        return com.example.bookings.database.models.Block.builder()
+                .id(dbBlock.getId())
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .user(dbBlock.getUser())
+                .property(dbBlock.getProperty())
+                .build();
     }
 }

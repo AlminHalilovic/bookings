@@ -14,18 +14,23 @@ public class BookingMapper {
     }
 
     public com.example.bookings.database.models.Booking toDb(CreateBookingRequest request, Property property) {
-        return new com.example.bookings.database.models.Booking()
-                .setStartDate(request.startDate())
-                .setEndDate(request.endDate())
-                .setUser(property.getUser())
-                .setProperty(property);
+
+        return com.example.bookings.database.models.Booking.builder()
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .property(property)
+                .user(property.getUser())
+                .build();
     }
 
     public com.example.bookings.database.models.Booking toDb(UpdateBookingRequest request,
                                                              com.example.bookings.database.models.Booking dbBooking) {
-        dbBooking.setStartDate(request.startDate());
-        dbBooking.setEndDate(request.endDate());
-
-        return dbBooking;
+        return com.example.bookings.database.models.Booking.builder()
+                .id(dbBooking.getId())
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .property(dbBooking.getProperty())
+                .user(dbBooking.getUser())
+                .build();
     }
 }

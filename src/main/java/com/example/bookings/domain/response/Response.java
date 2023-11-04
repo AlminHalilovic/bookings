@@ -39,6 +39,12 @@ public class Response<T> {
         return response;
     }
 
+    public static <T> Response<T> noContent() {
+        Response<T> response = new Response<>();
+        response.setStatus(Status.NO_CONTENT);
+        return response;
+    }
+
 
     public static <T> Response<T> exception() {
         Response<T> response = new Response<>();
@@ -73,7 +79,7 @@ public class Response<T> {
     }
 
     public enum Status {
-        OK, BAD_REQUEST, EXCEPTION, NOT_FOUND, DUPLICATE_ENTITY, FORBIDDEN, CREATED
+        OK, BAD_REQUEST, EXCEPTION, NOT_FOUND, DUPLICATE_ENTITY, FORBIDDEN, CREATED, NO_CONTENT
     }
 
     @Getter

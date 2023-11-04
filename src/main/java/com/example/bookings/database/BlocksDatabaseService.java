@@ -8,6 +8,7 @@ import com.example.bookings.domain.Block;
 import com.example.bookings.domain.request.CreateBlockRequest;
 import com.example.bookings.domain.request.UpdateBlockRequest;
 import com.example.bookings.exceptions.ApplicationException;
+import com.example.bookings.exceptions.EntityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +28,7 @@ public class BlocksDatabaseService {
     private final BlockMapper blockMapper;
 
     public Block getBlock(String id) {
-        long idLong;
-        try {
-            idLong = Long.parseLong(id);
-        } catch (Exception e) {
-            throw ApplicationException.buildException(BLOCK, ENTITY_NOT_FOUND, id);
-        }
-
+        long idLong = parseId(id, BLOCK);
         com.example.bookings.database.models.Block block = blockRepository.findById(idLong).orElseThrow(
                 () -> ApplicationException.buildException(BLOCK, ENTITY_NOT_FOUND, id)
         );
@@ -42,12 +37,7 @@ public class BlocksDatabaseService {
     }
 
     public List<Block> getBlocksByPropertyId(String propertyId) {
-        long idLong;
-        try {
-            idLong = Long.parseLong(propertyId);
-        } catch (Exception e) {
-            throw ApplicationException.buildException(PROPERTY, ENTITY_NOT_FOUND, propertyId);
-        }
+        long idLong = parseId(propertyId, PROPERTY);
         return blockRepository.findByPropertyId(idLong).stream().map(blockMapper::toDomain).toList();
     }
 
@@ -62,13 +52,7 @@ public class BlocksDatabaseService {
     }
 
     public Block updateBlock(String id, UpdateBlockRequest request) {
-        long idLong;
-        try {
-            idLong = Long.parseLong(id);
-        } catch (Exception e) {
-            throw ApplicationException.buildException(BLOCK, ENTITY_NOT_FOUND, id);
-        }
-
+        long idLong = parseId(id, BLOCK);
         com.example.bookings.database.models.Block block = blockRepository.findById(idLong).orElseThrow(
                 () -> ApplicationException.buildException(BLOCK, ENTITY_NOT_FOUND, id)
         );
@@ -83,5 +67,24 @@ public class BlocksDatabaseService {
     public List<Block> getBlocksBetweenDates(LocalDate startDate, LocalDate endDate) {
         return blockRepository.findByStartDateBetweenOrEndDateBetween(startDate, endDate, startDate, endDate)
                 .stream().map(blockMapper::toDomain).toList();
+    }
+
+    public boolean blocksExistBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return blockRepository.existsByStartDateBetweenOrEndDateBetween(startDate, endDate, startDate, endDate);
+    }
+
+    public void deleteBlock(String id) {
+        long idLong = parseId(id, BLOCK);
+        blockRepository.deleteById(idLong);
+    }
+
+    private long parseId(String id, EntityType entityType) {
+        long idLong;
+        try {
+            idLong = Long.parseLong(id);
+        } catch (Exception e) {
+            throw ApplicationException.buildException(entityType, ENTITY_NOT_FOUND, id);
+        }
+        return idLong;
     }
 }

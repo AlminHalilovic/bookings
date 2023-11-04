@@ -2,26 +2,24 @@ package com.example.bookings.database.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "bookings")
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Builder
 public class Booking {
+    LocalDate startDate;
+    LocalDate endDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    LocalDate startDate;
-    LocalDate endDate;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;

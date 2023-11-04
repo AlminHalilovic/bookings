@@ -81,7 +81,6 @@ public class PropertyControllerIntegrationTests {
         roleRepository.deleteAll();
     }
 
-
     @Test
     @DisplayName("GET /api/v1/properties/{id}")
     @WithMockUser(value = USER_EMAIL)
@@ -121,7 +120,6 @@ public class PropertyControllerIntegrationTests {
         CreatePropertyRequest request = new CreatePropertyRequest("name", "location");
         String jsonString = new ObjectMapper().writeValueAsString(request);
 
-
         // WHEN
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/properties")
@@ -129,7 +127,6 @@ public class PropertyControllerIntegrationTests {
                         .content(jsonString))
                 .andExpect(status().isCreated())
                 .andReturn();
-
 
         // THEN
         String responseString = mvcResult.getResponse().getContentAsString();
@@ -142,5 +139,4 @@ public class PropertyControllerIntegrationTests {
         assertEquals(response.getPayload().name(), request.name());
         assertEquals(response.getPayload().location(), request.location());
     }
-
 }

@@ -25,7 +25,7 @@ import java.security.Principal;
 public class BookingsController {
     private final BookingsService bookingsService;
 
-    @GetMapping
+    @GetMapping("/property/{propertyId}")
     @Operation(summary = "Get Bookings by propertyId", tags = {"bookings"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
@@ -79,5 +79,17 @@ public class BookingsController {
         return Response
                 .ok()
                 .setPayload(bookingsService.updateBooking(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete Booking", tags = {"blocks"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful operation")
+    })
+    public Response deleteBooking(
+            @PathVariable("id") String id) {
+        bookingsService.deleteBooking(id);
+        return Response.noContent();
     }
 }

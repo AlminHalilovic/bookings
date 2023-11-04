@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public record CreateBookingRequest(
         @NotEmpty String propertyId,
         @FutureOrPresent LocalDate startDate,
-
         @FutureOrPresent LocalDate endDate) implements DateRangeRecord {
     @Override
     public LocalDate getStartDate() {

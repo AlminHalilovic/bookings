@@ -3,7 +3,6 @@ package com.example.bookings.services;
 import com.example.bookings.database.BlocksDatabaseService;
 import com.example.bookings.database.BookingsDatabaseService;
 import com.example.bookings.domain.Block;
-import com.example.bookings.domain.Booking;
 import com.example.bookings.domain.request.CreateBlockRequest;
 import com.example.bookings.domain.request.UpdateBlockRequest;
 import com.example.bookings.exceptions.ApplicationException;
@@ -31,18 +30,22 @@ public class BlocksService {
     }
 
     public Block createBlock(CreateBlockRequest request) {
-        List<Booking> existingBookings = bookingsDatabaseService.getBookingsBetweenDates(request.startDate(), request.endDate());
-        if (!existingBookings.isEmpty()) {
+        boolean blocksExist = bookingsDatabaseService.bookingsExistBetweenDates(request.startDate(), request.endDate());
+        if (blocksExist) {
             throw ApplicationException.buildException(EntityType.BLOCK, NOT_AVAILABLE);
         }
         return blocksDatabaseService.createBlock(request);
     }
 
     public Block updateBlock(String id, UpdateBlockRequest request) {
-        List<Booking> existingBookings = bookingsDatabaseService.getBookingsBetweenDates(request.startDate(), request.endDate());
-        if (!existingBookings.isEmpty()) {
+        boolean blocksExist = bookingsDatabaseService.bookingsExistBetweenDates(request.startDate(), request.endDate());
+        if (blocksExist) {
             throw ApplicationException.buildException(EntityType.BLOCK, NOT_AVAILABLE);
         }
         return blocksDatabaseService.updateBlock(id, request);
+    }
+
+    public void deleteBlock(String id) {
+        blocksDatabaseService.deleteBlock(id);
     }
 }

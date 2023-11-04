@@ -1,6 +1,7 @@
 package com.example.bookings.utils.validators;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -14,4 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = StartDateEndDateValidator.class)
 @Documented
 public @interface StartDateEndDateConstraint {
+    String message() default "Invalid dates request.";
+    Class <?> [] groups() default {};
+    Class <? extends Payload> [] payload() default {};
 }

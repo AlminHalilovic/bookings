@@ -2,7 +2,6 @@ package com.example.bookings.services;
 
 import com.example.bookings.database.BlocksDatabaseService;
 import com.example.bookings.database.BookingsDatabaseService;
-import com.example.bookings.domain.Block;
 import com.example.bookings.domain.Booking;
 import com.example.bookings.domain.request.CreateBookingRequest;
 import com.example.bookings.domain.request.UpdateBookingRequest;
@@ -30,13 +29,13 @@ public class BookingsService {
     }
 
     public Booking createBooking(CreateBookingRequest request) {
-        List<Block> existingBlocks = blocksDatabaseService.getBlocksBetweenDates(request.startDate(), request.endDate());
-        if (!existingBlocks.isEmpty()) {
+        boolean blocksExist = blocksDatabaseService.blocksExistBetweenDates(request.startDate(), request.endDate());
+        if (blocksExist) {
             throw ApplicationException.buildException(EntityType.BOOKING, NOT_AVAILABLE);
         }
 
-        List<Booking> existingBookings = bookingsDatabaseService.getBookingsBetweenDates(request.startDate(), request.endDate());
-        if (!existingBookings.isEmpty()) {
+        boolean bookingsExist = bookingsDatabaseService.bookingsExistBetweenDates(request.startDate(), request.endDate());
+        if (bookingsExist) {
             throw ApplicationException.buildException(EntityType.BOOKING, NOT_AVAILABLE);
         }
 
@@ -44,16 +43,19 @@ public class BookingsService {
     }
 
     public Booking updateBooking(String id, UpdateBookingRequest request) {
-        List<Block> existingBlocks = blocksDatabaseService.getBlocksBetweenDates(request.startDate(), request.endDate());
-        if (!existingBlocks.isEmpty()) {
+        boolean blocksExist = blocksDatabaseService.blocksExistBetweenDates(request.startDate(), request.endDate());
+        if (blocksExist) {
             throw ApplicationException.buildException(EntityType.BOOKING, NOT_AVAILABLE);
         }
 
-        List<Booking> existingBookings = bookingsDatabaseService.getBookingsBetweenDates(request.startDate(), request.endDate());
-        if (!existingBookings.isEmpty()) {
+        boolean bookingsExist = bookingsDatabaseService.bookingsExistBetweenDates(request.startDate(), request.endDate());
+        if (bookingsExist) {
             throw ApplicationException.buildException(EntityType.BOOKING, NOT_AVAILABLE);
         }
         return bookingsDatabaseService.updateBooking(id, request);
     }
 
+    public void deleteBooking(String id) {
+        bookingsDatabaseService.deleteBooking(id);
+    }
 }
