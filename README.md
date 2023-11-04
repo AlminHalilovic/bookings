@@ -4,10 +4,9 @@
 Below is the list of features completed for the assignment
 <br>
 #### authentication
-* POST /api/v1/auth/signup: Allows users to be signed up with email/password entries. Endpoint is not authenticated.
+* POST /api/v1/auth/signup: Allows users to be signed up with email/password entries. **Endpoint is not authenticated.**
   <br>
-* POST /api/v1/auth/login: Allows users to login and get access token. Endpoint is not authenticated.
-<br>
+* POST /api/v1/auth/login: Allows users to login and get access token. **Endpoint is not authenticated.**
 
 #### properties
 
@@ -20,9 +19,9 @@ Below is the list of features completed for the assignment
 * **GET /api/v1/properties**: Enables fetching of properties. Requires OWNER or USER role.
   <br>
 * **GET /api/v1/properties/:id**: Enables fetching a property by id. Requires OWNER or USER role.
-<br>
+  <br>
 * **GET /api/v1/properties/:id/availability**: Enables fetching list of bookings and blocks on property by id. Requires OWNER or USER role.
-<br>
+  <br>
 #### blocks
 * **POST /api/v1/blocks**: Enables creation of a block. Requires OWNER role.
   <br>
@@ -31,7 +30,7 @@ Below is the list of features completed for the assignment
 * **DELETE /api/v1/blocks**: Enables deleting of a block. Requires OWNER role.
   <br>
 * **GET /api/v1/blocks/:propertyId**: Enables fetching of blocks by propertyId. Requires OWNER role.
-<br>
+  <br>
 #### bookings
 * **POST /api/v1/bookings**: Enables creation of a booking. Requires USER role.
   <br>
@@ -76,7 +75,6 @@ Navigate to the root of the project via command line and execute the commands
 Navigate to the OffersApplication.java class and run main method. Application will start on the port 8080
 
 #### 3. Docker
-Run `./gradlew build` command.
 Build the container by going to the folder containing Dockerfile and run following command
 ```
 docker build -t spring-boot:1.0 .
@@ -102,7 +100,6 @@ Navigate to the tests package and run the tests inside it
 After running the project, go to http://localhost:8080/swagger-ui/index.html#. As part of data seeding, user and owner are created by default.
 <br>
 1. Call **/api/v1/auth/login** endpoint with credentials provided in the application.yaml file to get the JWT token.
-<br>
 2. Click **Authorize** on top of the page and paste the token from the response.
 
 <br>
