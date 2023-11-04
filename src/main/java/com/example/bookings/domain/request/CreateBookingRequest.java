@@ -1,19 +1,24 @@
 package com.example.bookings.domain.request;
 
+import com.example.bookings.utils.validators.StartDateEndDateConstraint;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.time.LocalDate;
 
-public record CreateBookingRequest(String propertyId, LocalDate startDate, LocalDate endDate) {
-    public CreateBookingRequest {
-        if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("startDate cannot be in the past");
-        }
+@StartDateEndDateConstraint
+public record CreateBookingRequest(
+        @NotEmpty String propertyId,
+        @FutureOrPresent LocalDate startDate,
 
-        if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("startDate cannot be in the past");
-        }
+        @FutureOrPresent LocalDate endDate) implements DateRangeRecord {
+    @Override
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("startDate cannot be after endDate");
-        }
+    @Override
+    public LocalDate getEndDate() {
+        return endDate;
     }
 }

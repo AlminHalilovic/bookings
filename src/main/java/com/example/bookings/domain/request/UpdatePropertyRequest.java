@@ -1,4 +1,6 @@
 package com.example.bookings.domain.request;
 
-public record UpdatePropertyRequest(String name, String location) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record UpdatePropertyRequest(@NotEmpty String name, @NotEmpty String location) {
 }
