@@ -41,6 +41,9 @@ dependencies {
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '6.1.5'
 }
 
-tasks.named('test') {
+tasks.named('test', Test) {
 	useJUnitPlatform()
+	testLogging {
+		events "passed"
+	}
 }

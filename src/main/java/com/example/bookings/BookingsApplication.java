@@ -1,7 +1,9 @@
 package com.example.bookings;
 
+import com.example.bookings.database.models.Property;
 import com.example.bookings.database.models.Role;
 import com.example.bookings.database.models.User;
+import com.example.bookings.database.repositories.PropertyRepository;
 import com.example.bookings.database.repositories.RoleRepository;
 import com.example.bookings.database.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -23,10 +25,14 @@ public class BookingsApplication {
         SpringApplication.run(BookingsApplication.class, args);
     }
 
+    /**
+     * Seeds roles, owner user and one property belonging to owner user
+     */
     @Bean
     @ConditionalOnProperty(prefix = "data.seeding", name = "enabled", havingValue = "true", matchIfMissing = true)
     public CommandLineRunner seedDataOnStartup(RoleRepository roleRepository,
                                                UserRepository userRepository,
+                                               PropertyRepository propertyRepository,
                                                PasswordEncoder passwordEncoder) {
         return args -> {
             roleRepository.save(Role.builder().name(ROLE_USER.name()).build());
@@ -40,6 +46,13 @@ public class BookingsApplication {
                     .userRoles(Set.of(ownerRole))
                     .build();
             userRepository.save(user);
+
+            Property property = Property.builder()
+                    .name("Property 1")
+                    .location("Location 1")
+                    .user(user)
+                    .build();
+            propertyRepository.save(property);
 
         };
     }
