@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +17,4 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-
-    @ManyToMany(mappedBy = "userRoles")
-    private Set<User> users;
-
 }

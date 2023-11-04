@@ -7,6 +7,7 @@ import com.example.bookings.database.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -23,6 +24,7 @@ public class BookingsApplication {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "data.seeding", name = "enabled", havingValue = "true", matchIfMissing = true)
     public CommandLineRunner seedDataOnStartup(RoleRepository roleRepository,
                                                UserRepository userRepository,
                                                PasswordEncoder passwordEncoder) {
