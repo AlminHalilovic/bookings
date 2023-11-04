@@ -25,6 +25,14 @@ spring:
 token:
   signing:
     key: 8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb
+
 data:
   seeding:
     enabled: true
+    users:
+      - email: user@hostfully.com
+        password: pass
+        role: ROLE_USER
+      - email: owner@hostfully.com
+        password: pass
+        role: ROLE_OWNER

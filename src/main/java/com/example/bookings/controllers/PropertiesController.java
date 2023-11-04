@@ -1,6 +1,7 @@
 package com.example.bookings.controllers;
 
 import com.example.bookings.domain.Property;
+import com.example.bookings.domain.PropertyAvailability;
 import com.example.bookings.domain.request.CreatePropertyRequest;
 import com.example.bookings.domain.request.UpdatePropertyRequest;
 import com.example.bookings.domain.response.Response;
@@ -80,5 +81,17 @@ public class PropertiesController {
         return Response
                 .ok()
                 .setPayload(propertiesService.updateProperty(id, request));
+    }
+
+    @GetMapping("/{id}/availability")
+    @Operation(summary = "Get Property Availability", tags = {"properties"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = PropertyAvailability.class))})})
+    public Response getPropertyAvailability(
+            @PathVariable("id") String id) {
+        return Response
+                .ok()
+                .setPayload(propertiesService.getPropertyAvailability(id));
     }
 }
