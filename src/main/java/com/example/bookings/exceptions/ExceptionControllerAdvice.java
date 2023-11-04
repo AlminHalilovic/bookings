@@ -1,10 +1,12 @@
 package com.example.bookings.exceptions;
 
 import com.example.bookings.domain.response.Response;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -70,5 +72,12 @@ public class ExceptionControllerAdvice {
             error.getViolations().add(new ValidationViolation(fieldError.getField(), fieldError.getDefaultMessage()));
         }
         return error;
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        Response response = Response.badRequest();
+        response.addErrorMsgToResponse(ex.getCause().getCause().getMessage(), (Exception) ex.getCause().getCause());
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 }

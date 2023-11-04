@@ -11,6 +11,7 @@ import com.example.bookings.exceptions.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.bookings.exceptions.EntityType.BOOKING;
@@ -77,5 +78,10 @@ public class BookingsDatabaseService {
 
         return bookingMapper.toDomain(booking);
 
+    }
+
+    public List<Booking> getBookingsBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return bookingRepository.findByStartDateBetweenOrEndDateBetween(startDate, endDate, startDate, endDate)
+                .stream().map(bookingMapper::toDomain).toList();
     }
 }

@@ -6,6 +6,7 @@ import com.example.bookings.domain.request.UpdateBookingRequest;
 import com.example.bookings.domain.response.Response;
 import com.example.bookings.services.BookingsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +24,18 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class BookingsController {
     private final BookingsService bookingsService;
+
+    @GetMapping
+    @Operation(summary = "Get Bookings by propertyId", tags = {"bookings"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Booking.class))
+                    )})})
+    public Response getBookingsByPropertyId(@PathVariable("propertyId") String propertyId, Principal principal) {
+        return Response.ok()
+                .setPayload(bookingsService.getBookingsByPropertyId(propertyId));
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Booking", tags = {"bookings"}, security = @SecurityRequirement(name = "bearerAuth"))

@@ -6,6 +6,7 @@ import com.example.bookings.domain.request.UpdateBlockRequest;
 import com.example.bookings.domain.response.Response;
 import com.example.bookings.services.BlocksService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +24,18 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class BlocksController {
     private final BlocksService blocksService;
+
+    @GetMapping
+    @Operation(summary = "Get Blocks by propertyId", tags = {"blocks"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Block.class))
+                    )})})
+    public Response getBlocksByPropertyId(@PathVariable("propertyId") String propertyId, Principal principal) {
+        return Response.ok()
+                .setPayload(blocksService.getBlocksByPropertyId(propertyId));
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Block", tags = {"blocks"}, security = @SecurityRequirement(name = "bearerAuth"))
