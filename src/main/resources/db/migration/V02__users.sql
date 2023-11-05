@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS `users` (
     lastName varchar(255) not null,
     email varchar(255) not null,
     password varchar(255) not null,
-    role varchar(255) not null,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
@@ -21,11 +20,11 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
     roleId int not null,
     primary key (userId, roleId),
     constraint fk_user
-        foreign key (userId) references `users` (id),
+        foreign key (userId) references `users` (id) ON DELETE CASCADE,
         constraint fk_role
-                foreign key (roleId) references `roles` (id)
+                foreign key (roleId) references `roles` (id) ON DELETE CASCADE
 );
 
 ALTER TABLE `properties`
     ADD FOREIGN KEY (ownerId)
-    references `users`(id);
+    references `users`(id)  ON DELETE CASCADE;
