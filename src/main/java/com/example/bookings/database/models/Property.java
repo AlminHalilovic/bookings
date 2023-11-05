@@ -17,13 +17,13 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "LOCATION")
+    @Column(name = "location")
     private String location;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "ownerId", referencedColumnName = "id")
     private User user;
 }

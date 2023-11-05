@@ -73,7 +73,7 @@ Navigate to the root of the project via command line and execute the commands
 ./gradlew bootRun
 ```
 #### 2. IntellJ IDEA
-Navigate to the OffersApplication.java class and run main method. Application will start on the port 8080
+Navigate to the BookingsApplication.java class and run main method. Application will start on the port 8080
 
 #### 3. Docker
 Run `./gradlew build` command.

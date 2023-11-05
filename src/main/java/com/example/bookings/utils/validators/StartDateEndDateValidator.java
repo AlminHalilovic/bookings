@@ -36,6 +36,6 @@ public class StartDateEndDateValidator implements ConstraintValidator<StartDateE
     }
 
     private boolean isValidDateRange(LocalDate startDate, LocalDate endDate) {
-        return startDate.isBefore(endDate);
+        return startDate.equals(endDate) || startDate.isBefore(endDate);
     }
 }

@@ -15,7 +15,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class Booking {
+
+    @Column(name = "startDate")
     LocalDate startDate;
+
+    @Column(name = "endDate")
     LocalDate endDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

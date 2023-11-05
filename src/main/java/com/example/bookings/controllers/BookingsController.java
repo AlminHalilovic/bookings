@@ -83,7 +83,7 @@ public class BookingsController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Delete Booking", tags = {"blocks"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Delete Booking", tags = {"bookings"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successful operation")
     })

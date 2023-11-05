@@ -15,13 +15,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class Block {
+
+    @Column(name = "startDate")
     LocalDate startDate;
+
+    @Column(name = "endDate")
     LocalDate endDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "ownerId", referencedColumnName = "id")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -51,6 +51,8 @@ public class DataSeedingUtil {
 
                 User user = User.builder()
                         .email(userData.getEmail())
+                        .firstName(userData.getFirstName())
+                        .lastName(userData.getLastName())
                         .password(passwordEncoder.encode(userData.getPassword()))
                         .userRoles(Collections.singleton(role))
                         .build();
@@ -85,6 +87,8 @@ class UserDataConfig {
 @Data
 class UserData {
     private String email;
+    private String firstName;
+    private String lastName;
     private String password;
     private String role;
 }
